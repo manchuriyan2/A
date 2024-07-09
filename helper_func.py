@@ -1,4 +1,4 @@
-#(©)Codeflix_Bots
+
 import base64
 import re
 import requests
@@ -6,7 +6,7 @@ import time
 import asyncio
 from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
-from config import FORCE_SUB_CHANNEL, ADMINS, FORCE_SUB_CHANNEL2
+from config import ADMINS, FORCE_SUB_CHANNEL1, FORCE_SUB_CHANNEL2, FORCE_SUB_CHANNEL3, FORCE_SUB_CHANNEL4
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
 from shortzy import Shortzy
@@ -18,14 +18,14 @@ from database.database import user_data, db_verify_status, db_update_verify_stat
 #logger = logging.getLogger(__name__)
 #logger.setLevel(logging.INFO)
 
-async def is_subscribed(filter, client, update):
-    if not FORCE_SUB_CHANNEL:
+async def is_subscribed1(filter, client, update):
+    if not FORCE_SUB_CHANNEL1:
         return True
     user_id = update.from_user.id
     if user_id in ADMINS:
         return True
     try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL, user_id = user_id)
+        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL1, user_id = user_id)
     except UserNotParticipant:
         return False
 
@@ -50,7 +50,38 @@ async def is_subscribed2(filter, client, update):
     else:
         return True
         
+async def is_subscribed3(filter, client, update):
+    if not FORCE_SUB_CHANNEL3:
+        return True
+    user_id = update.from_user.id
+    if user_id in ADMINS:
+        return True
+    try:
+        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL3, user_id = user_id)
+    except UserNotParticipant:
+        return False
 
+    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
+        return False
+    else:
+        return True
+
+async def is_subscribed4(filter, client, update):
+    if not FORCE_SUB_CHANNEL4:
+        return True
+    user_id = update.from_user.id
+    if user_id in ADMINS:
+        return True
+    try:
+        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL4, user_id = user_id)
+    except UserNotParticipant:
+        return False
+
+    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
+        return False
+    else:
+        return True
+        
 async def encode(string):
     string_bytes = string.encode("ascii")
     base64_bytes = base64.urlsafe_b64encode(string_bytes)
@@ -161,7 +192,7 @@ def get_readable_time(seconds: int) -> str:
 
 async def increasepremtime(user_id : int, timeforprem : int):
     if timeforprem == 0: 
-        realtime = 0
+        realtime = 1
     elif timeforprem == 1:
         realtime = 86400*7
     elif timeforprem == 2:
@@ -172,11 +203,8 @@ async def increasepremtime(user_id : int, timeforprem : int):
         realtime == 86400*31*6
     elif timeforprem == 5:
         realtime == 86400*31*12
-    elif timeforprem == 6:
-        realtime = 300
-    elif timeforprem == 7:
-        realtime = 3600
             
     await update_verify_status(user_id, is_verified=True, verified_time=time.time()-realtime)
+    
 subscribed = filters.create(is_subscribed)
 subscribed2 = filters.create(is_subscribed2)
