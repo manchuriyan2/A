@@ -1,12 +1,10 @@
 from aiohttp import web
 from plugins import web_server
-
 import pyromod.listen
 from pyrogram import Client, enums
 from datetime import datetime
 import sys
-
-from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL, FORCE_SUB_CHANNEL2, CHANNEL_ID, PORT
+from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, CHANNEL_ID, PORT, FORCE_SUB_CHANNEL1, FORCE_SUB_CHANNEL2, FORCE_SUB_CHANNEL3, FORCE_SUB_CHANNEL4
 
 class Bot(Client):
     def __init__(self):
@@ -37,18 +35,18 @@ class Bot(Client):
             self.LOGGER(__name__).info("🔴 Bot Stopped.")
             sys.exit()
 
-        if FORCE_SUB_CHANNEL:
+        if FORCE_SUB_CHANNEL1:
             try:
-                info = await self.get_chat(FORCE_SUB_CHANNEL)
-                link = info.invite_link or await self.export_chat_invite_link(FORCE_SUB_CHANNEL)
-                self.invitelink = link
+                info = await self.get_chat(FORCE_SUB_CHANNEL1)
+                link = info.invite_link or await self.export_chat_invite_link(FORCE_SUB_CHANNEL1)
+                self.invitelink1 = link
                 self.LOGGER(__name__).info(
                     f"🟢 FORCE_SUB_CHANNEL detected!\nTitle: {info.title}\n Chat ID: {info.id}\n"
                 )
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning(
-                    f"🔴 Bot cannot fetch invite link from FORCE_SUB_CHANNEL. Make sure @{self.username} is an admin in the chat, {FORCE_SUB_CHANNEL}"
+                    f"🔴 Bot cannot fetch invite link from FORCE_SUB_CHANNEL1, Make sure @{self.username} is an admin in the chat, {FORCE_SUB_CHANNEL1}"
                 )
                 self.LOGGER(__name__).info("🔴 Bot Stopped.")
                 sys.exit()
@@ -69,6 +67,36 @@ class Bot(Client):
                 self.LOGGER(__name__).info("🔴 Bot Stopped.")
                 sys.exit()
 
+        if FORCE_SUB_CHANNEL3:
+            try:
+                info = await self.get_chat(FORCE_SUB_CHANNEL3)
+                link = info.invite_link or await self.export_chat_invite_link(FORCE_SUB_CHANNEL3)
+                self.invitelink3 = link
+                self.LOGGER(__name__).info(
+                    f"🟢 FORCE_SUB_CHANNEL3 detected!\nTitle: {info.title}\n Chat ID: {info.id}\n"
+                )
+            except Exception as a:
+                self.LOGGER(__name__).warning(a)
+                self.LOGGER(__name__).warning(
+                    f"🔴 Bot cannot fetch invite link from FORCE_SUB_CHANNEL3, Make sure @{self.username} is an admin in the chat, {FORCE_SUB_CHANNEL3}"
+                )
+                self.LOGGER(__name__).info("🔴 Bot Stopped.")
+                sys.exit()
+
+        if FORCE_SUB_CHANNEL4:
+            try:
+                info = await self.get_chat(FORCE_SUB_CHANNEL4)
+                link = info.invite_link or await self.export_chat_invite_link(FORCE_SUB_CHANNEL4)
+                self.invitelink4 = link
+                self.LOGGER(__name__).info(
+                    f"🟢 FORCE_SUB_CHANNEL4 detected!\nTitle: {info.title}\n Chat ID: {info.id}\n"
+                )
+            except Exception as a:
+                self.LOGGER(__name__).warning(a)
+                self.LOGGER(__name__).warning(
+                    f"🔴 Bot cannot fetch invite link from FORCE_SUB_CHANNEL2. Make sure @{self.username} is an admin in the chat, {FORCE_SUB_CHANNEL4}"
+                )
+                self.LOGGER(__name__).info("🔴 Bot Stopped.")
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
             self.db_channel = db_channel
