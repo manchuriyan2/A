@@ -14,7 +14,7 @@ from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 
 from bot import Bot
 from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT, OWNER_ID, SHORTLINK_API_URL, SHORTLINK_API_KEY, USE_PAYMENT, USE_SHORTLINK, VERIFY_EXPIRE, TIME, TUT_VID
-from helper_func import get_readable_time, increasepremtime, subscribed, subscribed2, decode, get_messages, get_shortlink, get_verify_status, update_verify_status, get_exp_time
+from helper_func import get_readable_time, increasepremtime, subscribed1, subscribed2, subscribed3, subscribed4, decode, get_messages, get_shortlink, get_verify_status, update_verify_status, get_exp_time
 from database.database import add_user, del_user, full_userbase, present_user
 
 SECONDS = TIME 
@@ -181,10 +181,10 @@ async def start_command(client: Client, message: Message):
 async def not_joined(client: Client, message: Message):
     buttons = [
         [
-            InlineKeyboardButton("Join 1", url=f"https://t.me/+LDdjfyT53hdiYzE1"),
-            InlineKeyboardButton("Join 2", url=client.invitelink),
-            InlineKeyboardButton("Join 3", url=client.invitelink2),
-            InlineKeyboardButton("Join 4", url=f"https://t.me/+R6xc_7a0yX4xYzVl")
+            InlineKeyboardButton("Join 1", url=client.invitelink1),
+            InlineKeyboardButton("Join 2", url=client.invitelink2),
+            InlineKeyboardButton("Join 3", url=client.invitelink3),
+            InlineKeyboardButton("Join 4", url=client.invitelink4)
         ]
     ]
     try:
