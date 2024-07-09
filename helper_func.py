@@ -1,4 +1,3 @@
-#(©)Codeflix_Bots
 import base64
 import re
 import requests
@@ -13,74 +12,41 @@ from shortzy import Shortzy
 from datetime import datetime
 from database.database import user_data, db_verify_status, db_update_verify_status
 
+# logger = logging.getLogger(__name__)
+# logger.setLevel(logging.INFO)
 
-
-#logger = logging.getLogger(__name__)
-#logger.setLevel(logging.INFO)
-
-async def is_subscribed1(filter, client, update):
-    if not FORCE_SUB_CHANNEL1:
+async def is_subscribed(filter, client, update, channel):
+    if not channel:
         return True
     user_id = update.from_user.id
     if user_id in ADMINS:
         return True
     try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL1, user_id = user_id)
+        member = await client.get_chat_member(chat_id=channel, user_id=user_id)
     except UserNotParticipant:
         return False
 
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
-        return False
-    else:
-        return True
+    return member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]
+
+# Define filter functions for each channel
+async def is_subscribed1(filter, client, update):
+    return await is_subscribed(filter, client, update, FORCE_SUB_CHANNEL1)
 
 async def is_subscribed2(filter, client, update):
-    if not FORCE_SUB_CHANNEL2:
-        return True
-    user_id = update.from_user.id
-    if user_id in ADMINS:
-        return True
-    try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL2, user_id = user_id)
-    except UserNotParticipant:
-        return False
+    return await is_subscribed(filter, client, update, FORCE_SUB_CHANNEL2)
 
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
-        return False
-    else:
-        return True
-        
 async def is_subscribed3(filter, client, update):
-    if not FORCE_SUB_CHANNEL3:
-        return True
-    user_id = update.from_user.id
-    if user_id in ADMINS:
-        return True
-    try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL3, user_id = user_id)
-    except UserNotParticipant:
-        return False
-
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
-        return False
-    else:
-        return True
+    return await is_subscribed(filter, client, update, FORCE_SUB_CHANNEL3)
 
 async def is_subscribed4(filter, client, update):
-    if not FORCE_SUB_CHANNEL4:
-        return True
-    user_id = update.from_user.id
-    if user_id in ADMINS:
-        return True
-    try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL4, user_id = user_id)
-    except UserNotParticipant:
-        return False
+    return await is_subscribed(filter, client, update, FORCE_SUB_CHANNEL4)
 
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
-        return False
-    else:
-        return True
+# Create filters for each subscription check
+subscribed1 = filters.create(is_subscribed1)
+subscribed2 = filters.create(is_subscribed2)
+subscribed3 = filters.create(is_subscribed3)
+subscribed4 = filters.create(is_subscribed4)
+
         
 async def encode(string):
     string_bytes = string.encode("ascii")
@@ -206,7 +172,3 @@ async def increasepremtime(user_id : int, timeforprem : int):
             
     await update_verify_status(user_id, is_verified=True, verified_time=time.time()-realtime)
     
-subscribed1 = filters.create(is_subscribed1)
-subscribed2 = filters.create(is_subscribed2)
-subscribed3 = filters.create(is_subscribed3)
-subscribed2 = filters.create(is_subscribed4)
