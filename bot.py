@@ -41,7 +41,7 @@ class Bot(Client):
                 link = info.invite_link or await self.export_chat_invite_link(FORCE_SUB_CHANNEL1)
                 self.invitelink1 = link
                 self.LOGGER(__name__).info(
-                    f"🟢 FORCE_SUB_CHANNEL detected!\nTitle: {info.title}\n Chat ID: {info.id}\n"
+                    f"🟢 FORCE_SUB_CHANNEL1 detected!\nTitle: {info.title}\n Chat ID: {info.id}\n"
                 )
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
