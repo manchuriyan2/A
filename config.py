@@ -16,14 +16,14 @@ FORCE_SUB_CHANNEL3 = int(os.environ.get("FORCE_SUB_CHANNEL3", "-1002215696699"))
 FORCE_SUB_CHANNEL4 = int(os.environ.get("FORCE_SUB_CHANNEL4", "-1002160820272")) #Pseudo Harem
 
 
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7227898838:AAH0GGaA1UdZVIpJLlYm5g6yj8pvfuSCmVo") #@Anime_Elixir1_Bot
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6341809781:AAGR06ZHSMP8hNLykwU_8wusKmrSdrCZKBA") #@Contentprovider_ebot
 APP_ID = int(os.environ.get("APP_ID", "25695562"))
 API_HASH = os.environ.get("API_HASH", "0b691c3e86603a7e34aae0b5927d725a")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001902545745"))
 OWNER_ID = int(os.environ.get("OWNER_ID", "1895952308"))
 
 PORT = os.environ.get("PORT", "8080")
-DB_URL = os.environ.get("DATABASE_URL", "mongodb+srv://skiliggeeXporter:skiliggeeXporter@cluster0.tdxtakc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+DB_URL = os.environ.get("DATABASE_URL", "mongodb+srv://deweyo5270minhluncom:deweyo5270minhluncom@cluster0.9ualtow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
 
 
