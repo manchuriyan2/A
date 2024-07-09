@@ -25,7 +25,7 @@ WAIT_MSG = """<b>Processing ...</b>"""
 REPLY_ERROR = """<blockquote><b>Use this command as a replay to any telegram message without any spaces.</b></blockquote>"""
 
 
-@Bot.on_message(filters.command('start') & filters.private & subscribed & subscribed2)
+@Bot.on_message(filters.command('start') & filters.private & subscribed1 & subscribed2 & subscribed3 & subscribed4)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
     if not await present_user(id):
