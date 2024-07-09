@@ -81,7 +81,12 @@ async def is_subscribed4(filter, client, update):
         return False
     else:
         return True
-        
+
+subscribed1 = filters.create(is_subscribed1)
+subscribed2 = filters.create(is_subscribed2)
+subscribed3 = filters.create(is_subscribed3)
+subscribed4 = filters.create(is_subscribed4)
+
 async def encode(string):
     string_bytes = string.encode("ascii")
     base64_bytes = base64.urlsafe_b64encode(string_bytes)
@@ -141,6 +146,28 @@ async def get_message_id(client, message):
     else:
         return 0
 
+def get_readable_time(seconds: int) -> str:
+    count = 0
+    up_time = ""
+    time_list = []
+    time_suffix_list = ["s", "m", "h", "days"]
+    while count < 4:
+        count += 1
+        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
+        if seconds == 0 and remainder == 0:
+            break
+        time_list.append(int(result))
+        seconds = int(remainder)
+    hmm = len(time_list)
+    for x in range(hmm):
+        time_list[x] = str(time_list[x]) + time_suffix_list[x]
+    if len(time_list) == 4:
+        up_time += f"{time_list.pop()}, "
+    time_list.reverse()
+    up_time += ":".join(time_list)
+    return up_time
+
+
 async def get_verify_status(user_id):
     verify = await db_verify_status(user_id)
     return verify
@@ -169,27 +196,6 @@ def get_exp_time(seconds):
     return result
 
 
-def get_readable_time(seconds: int) -> str:
-    count = 0
-    up_time = ""
-    time_list = []
-    time_suffix_list = ["s", "m", "h", "days"]
-    while count < 4:
-        count += 1
-        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
-        if seconds == 0 and remainder == 0:
-            break
-        time_list.append(int(result))
-        seconds = int(remainder)
-    hmm = len(time_list)
-    for x in range(hmm):
-        time_list[x] = str(time_list[x]) + time_suffix_list[x]
-    if len(time_list) == 4:
-        up_time += f"{time_list.pop()}, "
-    time_list.reverse()
-    up_time += ":".join(time_list)
-    return up_time
-
 async def increasepremtime(user_id : int, timeforprem : int):
     if timeforprem == 0: 
         realtime = 1
@@ -206,5 +212,3 @@ async def increasepremtime(user_id : int, timeforprem : int):
             
     await update_verify_status(user_id, is_verified=True, verified_time=time.time()-realtime)
     
-subscribed = filters.create(is_subscribed)
-subscribed2 = filters.create(is_subscribed2)
