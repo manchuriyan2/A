@@ -10,8 +10,11 @@ from logging.handlers import RotatingFileHandler
 #    FORCE_SUB_CHANNEL = temp
 
 
-FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002020304266")) #hanime
-FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "-1001824105670")) #anime download
+FORCE_SUB_CHANNEL1 = int(os.environ.get("FORCE_SUB_CHANNEL1", "-1002163120623")) #Days with My Stepsister
+FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "-1002198612616")) #My Deer Friend Nokotan
+FORCE_SUB_CHANNEL3 = int(os.environ.get("FORCE_SUB_CHANNEL3", "-1002215696699")) #Alya Sometimes Hides Her Feelings in Russian
+FORCE_SUB_CHANNEL4 = int(os.environ.get("FORCE_SUB_CHANNEL4", "-1002160820272")) #Pseudo Harem
+
 
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7227898838:AAH0GGaA1UdZVIpJLlYm5g6yj8pvfuSCmVo") #@Anime_Elixir1_Bot
 APP_ID = int(os.environ.get("APP_ID", "25695562"))
