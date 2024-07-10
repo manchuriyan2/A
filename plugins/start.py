@@ -216,7 +216,7 @@ async def get_users(client: Bot, message: Message):
     users = await full_userbase()
     await msg.edit(f"{len(users)} users are using this bot")
 
-
+'''
 
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
@@ -244,8 +244,9 @@ async def send_text(client: Bot, message: Message):
             except InputUserDeactivated:
                 await del_user(chat_id)
                 deleted += 1
-            except:
+            except Exception as e:
                 unsuccessful += 1
+                logging.error(f"Failed to send message to {chat_id}: {e}")
                 pass
             total += 1
 
@@ -263,6 +264,72 @@ async def send_text(client: Bot, message: Message):
         await asyncio.sleep(8)
         await msg.delete()
     return
+'''
+
+@Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
+async def send_text(client: Bot, message: Message):
+    if message.reply_to_message:
+        query = await full_userbase()
+        broadcast_msg = message.reply_to_message
+        total = len(query)
+        successful = 0
+        blocked = 0
+        deleted = 0
+        unsuccessful = 0
+
+        pls_wait = await message.reply("<b>Broadcasting Message.. This will Take Some Time ⌚</b>")
+
+        for index, chat_id in enumerate(query):
+            try:
+                snt_msg = await broadcast_msg.copy(chat_id)
+                await client.pin_chat_message(chat_id, snt_msg.message_id, disable_notification=True)
+                successful += 1
+            except FloodWait as e:
+                await asyncio.sleep(e.x)
+                snt_msg = await broadcast_msg.copy(chat_id)
+                await client.pin_chat_message(chat_id, snt_msg.message_id, disable_notification=True)
+                successful += 1
+            except UserIsBlocked:
+                await del_user(chat_id)
+                blocked += 1
+            except InputUserDeactivated:
+                await del_user(chat_id)
+                deleted += 1
+            except Exception as e:
+                unsuccessful += 1
+                logging.error(f"Failed to send message to {chat_id}: {e}")
+                pass
+
+            # Update live status every 10 messages
+            if (index + 1) % 10 == 0 or (index + 1) == total:
+                status = f"""<blockquote><b>Broadcast Progress
+
+- Total Users: {total}
+- Processed: {index + 1}/{total}
+- Successful: {successful}
+- Blocked Users: {blocked}
+- Deleted Accounts: {deleted}
+- Unsuccessful: {unsuccessful}</b></blockquote>"""
+                await pls_wait.edit(status)
+
+        # Final status update
+        status = f"""<blockquote><b>Broadcast Completed
+
+- Total Users: {total}
+- Successful: {successful}
+- Blocked Users: {blocked}
+- Deleted Accounts: {deleted}
+- Unsuccessful: {unsuccessful}</b></blockquote>"""
+        return await pls_wait.edit(status)
+
+    else:
+        msg = await message.reply(REPLY_ERROR)
+        await asyncio.sleep(8)
+        await msg.delete()
+    return
+
+
+
 
 if USE_PAYMENT:
     @Bot.on_message(filters.command('add_prem') & filters.private & filters.user(ADMINS))
