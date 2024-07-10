@@ -11,9 +11,9 @@ from logging.handlers import RotatingFileHandler
 
 
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002020304266")) #hanime
-FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "-1001824105670")) #anime download
+FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "-1002020304266")) #anime download
 
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6341809781:AAGR06ZHSMP8hNLykwU_8wusKmrSdrCZKBA") #@content
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7453211392:AAGU0HOcv7lbPmIf1E4WKXiCyycMNoZnPro") #@file
 APP_ID = int(os.environ.get("APP_ID", "25695562"))
 API_HASH = os.environ.get("API_HASH", "0b691c3e86603a7e34aae0b5927d725a")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001902545745"))
@@ -39,7 +39,7 @@ START_MSG = os.environ.get("START_MESSAGE", "<blockquote><b>ℹ️ Hello {mentio
 FORCE_MSG = os.environ.get("FORCE_SUB_MESSAGE", "<blockquote><b>ℹ️ Hello {mention}\nYou need to join in my Channel to use me\nKindly Please join Channel</b></blockquote>")
 try:
     ADMINS=[]
-    for x in (os.environ.get("ADMINS", "1895952308").split()):
+    for x in (os.environ.get("ADMINS", "6878668907").split()):
         ADMINS.append(int(x))
 except ValueError:
         raise Exception("Your Admins list does not contain valid integers.")
