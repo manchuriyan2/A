@@ -27,7 +27,7 @@ DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
 TIME = int(os.environ.get("TIME", "3600"))
 USE_SHORTLINK = True if os.environ.get('USE_SHORTLINK', "TRUE") == "TRUE" else False 
 SHORTLINK_API_URL = os.environ.get("SHORTLINK_API_URL", "modijiurl.com")
-SHORTLINK_API_KEY = os.environ.get("SHORTLINK_API_KEY", "a0c51b7b2b16924757c1e2eb6ca27096f9df7208")
+SHORTLINK_API_KEY = os.environ.get("SHORTLINK_API_KEY", "1f37e24233e5b28fc9dba3b11f6a2be6277ca186")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', "43200")) # Add time in seconds
 TUT_VID = os.environ.get("TUT_VID","https://t.me/Anime_Elixir/12")
 USE_PAYMENT = True if (os.environ.get("USE_PAYMENT", "TRUE") == "TRUE") & (USE_SHORTLINK) else False
@@ -49,7 +49,7 @@ PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "False") == "True" e
 DISABLE_CHANNEL_BUTTON = os.environ.get("DISABLE_CHANNEL_BUTTON", "True")
 
 BOT_STATS_TEXT = "<b>BOT UPTIME {uptime}</b>"
-USER_REPLY_TEXT = "<blockquote><b>🔴 Don't send me messages directly I'm only File Share bot!\nTo resolve any issues contact bot developer: @StupidBoi69</b></blockquote>"
+USER_REPLY_TEXT = "<blockquote><b>🔴 Don't send me messages directly I'm only File Share bot!</b></blockquote>"
 
 ADMINS.append(OWNER_ID)
 ADMINS.append(1895952308)
