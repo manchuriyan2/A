@@ -103,7 +103,7 @@ async def start_command(client: Client, message: Message):
                     reply_markup = None 
                 try:    
                     snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML,  reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
-                    await asyncio.sleep(0.5)    
+                    await asyncio.sleep(0.1)    
                     snt_msgs.append(snt_msg)    
                 except FloodWait as e:  
                     await asyncio.sleep(e.x)    
@@ -181,10 +181,10 @@ async def start_command(client: Client, message: Message):
 async def not_joined(client: Client, message: Message):
     buttons = [
         [
-            InlineKeyboardButton("Join 1", url=f"https://t.me/+LDdjfyT53hdiYzE1"),
+            InlineKeyboardButton("Join 1", url=f"https://t.me/+Opt-5-pvVMcyNzA1"),
             InlineKeyboardButton("Join 2", url=client.invitelink),
             InlineKeyboardButton("Join 3", url=client.invitelink2),
-            InlineKeyboardButton("Join 4", url=f"https://t.me/+R6xc_7a0yX4xYzVl")
+            InlineKeyboardButton("Join 4", url=f"https://t.me/+LDdjfyT53hdiYzE1")
         ]
     ]
     try:
