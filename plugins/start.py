@@ -13,7 +13,7 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, 
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 
 from bot import Bot
-from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT, OWNER_ID, SHORTLINK_API_URL, SHORTLINK_API_KEY, USE_PAYMENT, USE_SHORTLINK, VERIFY_EXPIRE, TIME, TUT_VID
+from config import *
 from helper_func import get_readable_time, increasepremtime, subscribed, subscribed2, decode, get_messages, get_shortlink, get_verify_status, update_verify_status, get_exp_time
 from database.database import add_user, del_user, full_userbase, present_user
 
@@ -28,35 +28,35 @@ REPLY_ERROR = """<blockquote><b>Use this command as a replay to any telegram mes
 @Bot.on_message(filters.command('start') & filters.private & subscribed & subscribed2)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
-    if not await present_user(id):
-        try:
-            await add_user(id)
-        except:
-            pass
-    if USE_SHORTLINK:
-        for i in range(1):
-            if id in ADMINS:
-                continue
-            verify_status = await get_verify_status(id)
-            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
-                await update_verify_status(id, is_verified=False)
-            if "verify_" in message.text:
-                _, token = message.text.split("_", 1)
-                if verify_status['verify_token'] != token:
-                    return await message.reply("<blockquote><b>🔴 Your token verification is invalid or Expired, Hit /start command and try again<b></blockquote>")
-                await update_verify_status(id, is_verified=True, verified_time=time.time())
-                if verify_status["link"] == "":
-                    reply_markup = None
-                await message.reply(f"<blockquote><b>Hooray 🎉, your token verification is successful\n\n Now you can access all files for 24-hrs...</b></blockquote>", reply_markup=reply_markup, protect_content=False, quote=True)
-    if len(message.text) > 7:
-        for i in range(1):
-            if USE_SHORTLINK : 
-                if id not in ADMINS:
-                    try:
-                        if not verify_status['is_verified']:
-                            continue
-                    except:
-                        continue
+    owner_id = ADMINS  # Fetch the owner's ID from config
+
+    # Check if the user is the owner
+    if id == owner_id:
+        # Owner-specific actions
+        # You can add any additional actions specific to the owner here
+        await message.reply("You are the owner! Additional actions can be added here.")
+
+    else:
+        if not await present_user(id):
+            try:
+                await add_user(id)
+            except:
+                pass
+
+        verify_status = await get_verify_status(id)
+        if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+            await update_verify_status(id, is_verified=False)
+
+        if "verify_" in message.text:
+            _, token = message.text.split("_", 1)
+            if verify_status['verify_token'] != token:
+                return await message.reply(f"<blockquote><b>🔴 Your token verification is invalid or Expired, Hit /start command and try again<b></blockquote>")
+            await update_verify_status(id, is_verified=True, verified_time=time.time())
+            if verify_status["link"] == "":
+                reply_markup = None
+            await message.reply(f"<blockquote><b>Hooray 🎉, your token verification is successful\n\n Now you can access all files for 24-hrs...</b></blockquote>", reply_markup=reply_markup, protect_content=False, quote=True)
+        
+        elif len(message.text) > 7 and verify_status['is_verified']:
             try:
                 base64_string = message.text.split(" ", 1)[1]
             except:
@@ -84,59 +84,51 @@ async def start_command(client: Client, message: Message):
                     ids = [int(int(argument[1]) / abs(client.db_channel.id))]
                 except:
                     return
-            temp_msg = await message.reply("Please wait... 🫷")
+            temp_msg = await message.reply("Please wait...")
             try:
                 messages = await get_messages(client, ids)
             except:
                 await message.reply_text("Something went wrong..!")
                 return
             await temp_msg.delete()
+            
             snt_msgs = []
+            
             for msg in messages:
                 if bool(CUSTOM_CAPTION) & bool(msg.document):
-                    caption = CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html,    filename=msg.document.file_name)
-                else:   
-                    caption = "" if not msg.caption else msg.caption.html   
-                if DISABLE_CHANNEL_BUTTON:  
-                    reply_markup = msg.reply_markup 
-                else:   
-                    reply_markup = None 
-                try:    
-                    snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML,  reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
-                    await asyncio.sleep(0.1)    
-                    snt_msgs.append(snt_msg)    
-                except FloodWait as e:  
-                    await asyncio.sleep(e.x)    
-                    snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode= ParseMode.HTML,  reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
-                    snt_msgs.append(snt_msg)    
-                except: 
-                    pass    
-                
-            notification_msg = await message.reply(f"<blockquote><b>🔴 This file will be  deleted in  {SECONDS // 60} minutes. Please save or forward it to your saved messages before it gets deleted.</b></blockquote>")
-            await asyncio.sleep(SECONDS)    
-            for snt_msg in snt_msgs:    
-                try:    
-                    await snt_msg.delete()  
-                except: 
-                    pass    
-            await notification_msg.edit(f"<blockquote><b>🗑️ Hey @{message.from_user.username} your file has been successfully deleted!</b></blockquote>")  
-            return  
-    if (1 == 1):
-        for i in range(1):
-            if USE_SHORTLINK : 
-                if id not in ADMINS:
-                    try:
-                        if not verify_status['is_verified']:
-                            continue
-                    except:
-                        continue
+                    caption = CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, filename=msg.document.file_name)
+                else:
+                    caption = "" if not msg.caption else msg.caption.html
+
+                if DISABLE_CHANNEL_BUTTON:
+                    reply_markup = msg.reply_markup
+                else:
+                    reply_markup = None
+
+                try:
+                    snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
+                    await asyncio.sleep(0.5)
+                    snt_msgs.append(snt_msg)
+                except FloodWait as e:
+                    await asyncio.sleep(e.x)
+                    snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
+                    snt_msgs.append(snt_msg)
+                except:
+                    pass
+            SD = await message.reply_text("blockquote><b>🔴 This file will be  deleted in 30 minutes. Please save or forward it to your saved messages before it gets deleted.</b></blockquote>")
+            await asyncio.sleep(1800)
+
+            for snt_msg in snt_msgs:
+                try:
+                    await snt_msg.delete()
+                    await SD.delete()
+                except:
+                    pass
+
+        elif verify_status['is_verified']:
             reply_markup = InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton("🦋 More", callback_data="about"),
-                        InlineKeyboardButton("📴 Close", callback_data="close")
-                    ]
-                ]
+                [[InlineKeyboardButton("📯 About", callback_data="about"),
+                  InlineKeyboardButton("📴 Close", callback_data="close")]]
             )
             await message.reply_text(
                 text=START_MSG.format(
@@ -150,31 +142,20 @@ async def start_command(client: Client, message: Message):
                 disable_web_page_preview=True,
                 quote=True
             )
-            return
-    if (1 == 1):
-        if USE_SHORTLINK : 
-            if id in ADMINS:
-                return
+
+        else:
             verify_status = await get_verify_status(id)
-            if not verify_status['is_verified']:
+            if IS_VERIFY and not verify_status['is_verified']:
+                short_url = f"modijiurl.com"
                 token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
                 await update_verify_status(id, verify_token=token, link="")
-                link = await get_shortlink(SHORTLINK_API_URL, SHORTLINK_API_KEY,f'https://t.me/{client.username}?start=verify_{token}')
-                if USE_PAYMENT:
-                    btn = [
-                    [InlineKeyboardButton("↪️ Get free access for 24-hrs ↩️", url=link)],
-                    [InlineKeyboardButton('🦋 Tutorial', url=TUT_VID)],
-                    [InlineKeyboardButton("💰 Purchase premium membership", callback_data="buy_prem")]
-                    ]
-                else:
-                    btn = [
+                link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API,f'https://t.me/{client.username}?start=verify_{token}')
+                btn = [
                     [InlineKeyboardButton("↪️ Get free access for 24-hrs ↩️", url=link)],
                     [InlineKeyboardButton('🦋 Tutorial', url=TUT_VID)]
                     ]
                 await message.reply(f"<blockquote><b>ℹ️ Hi @{message.from_user.username}\nYour verification is expired, click on below button and complete the verification to\n <u>Get free access for 24-hrs</u></b></blockquote>", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
                 return
-        return
-
 
     
 @Bot.on_message(filters.command('start') & filters.private)
@@ -263,58 +244,3 @@ async def send_text(client: Bot, message: Message):
         await asyncio.sleep(8)
         await msg.delete()
     return
-
-if USE_PAYMENT:
-    @Bot.on_message(filters.command('add_prem') & filters.private & filters.user(ADMINS))
-    async def add_user_premium_command(client: Bot, message: Message):
-        while True:
-            try:
-                user_id = await client.ask(text="Enter id of user\nHit /cancel to cancel : ",chat_id = message.from_user.id, timeout=60)
-            except Exception as e:
-                print(e)
-                return  
-            if user_id.text == "/cancel":
-                await user_id.edit("Cancelled!")
-                return
-            try:
-                await Bot.get_users(user_ids=user_id.text, self=client)
-                break
-            except:
-                await user_id.edit("The admin id is incorrect.", quote = True)
-                continue
-        user_id = int(user_id.text)
-        while True:
-            try:
-                timeforprem = await client.ask(text="<blockquote><b>Enter the amount of time Choose correctly.\n\nEnter 0 : For zero \nEnter 1 : For 7 days\nEnter 2 : For 1 month\nEnter 3 : For 3 months\nEnter 4 : For 6 months\nEnter 5 : For 1 year</b></blockquote>", chat_id=message.from_user.id, timeout=60)
-            except Exception as e:
-                print(e)
-                return
-            if not int(timeforprem.text) in [0, 1, 2, 3, 4, 5]:
-                await message.reply("You have given wrong input.")
-                continue
-            else:
-                break
-        timeforprem = int(timeforprem.text)
-        if timeforprem==0:
-            timestring = "24 hrs"           
-        elif timeforprem==1:
-            timestring = "7 days"
-        elif timeforprem==2:
-            timestring = "1 month"
-        elif timeforprem==3:
-            timestring = "3 month"
-        elif timeforprem==4:
-            timestring = "6 month"
-        elif timeforprem==5:
-            timestring = "1 year"
-        try:
-            await increasepremtime(user_id, timeforprem)
-            await message.reply("Premium added!")
-            await client.send_message(
-            chat_id=user_id,
-            text=f"Premium plan of {timestring} added to your account.",
-        )
-        except Exception as e:
-            print(e)
-            await message.reply("Some error occurred.\nCheck logs...\nIf you got premium added message then its ok.")
-        return
