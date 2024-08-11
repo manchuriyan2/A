@@ -11,23 +11,23 @@ from logging.handlers import RotatingFileHandler
 
 
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002020304266")) #hanime
-FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "-1001824105670")) #anime download
+FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "")) #
 
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6341809781:AAGR06ZHSMP8hNLykwU_8wusKmrSdrCZKBA") #@content
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6065880957:AAFKzCVrjNKpOZsyUOMRH-SV9uu5zpinY5g") #
 APP_ID = int(os.environ.get("APP_ID", "25695562"))
 API_HASH = os.environ.get("API_HASH", "0b691c3e86603a7e34aae0b5927d725a")
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001902545745"))
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001929558021"))
 OWNER_ID = int(os.environ.get("OWNER_ID", "1895952308"))
 
 PORT = os.environ.get("PORT", "8080")
 DB_URL = os.environ.get("DATABASE_URL", "mongodb+srv://deweyo5270minhluncom:deweyo5270minhluncom@cluster0.9ualtow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
+DB_NAME = os.environ.get("DATABASE_NAME", "AdultElixir")
 
 
 TIME = int(os.environ.get("TIME", "3600"))
 USE_SHORTLINK = True if os.environ.get('USE_SHORTLINK', "TRUE") == "TRUE" else False 
-SHORTLINK_API_URL = os.environ.get("SHORTLINK_API_URL", "modijiurl.com")
-SHORTLINK_API_KEY = os.environ.get("SHORTLINK_API_KEY", "a0c51b7b2b16924757c1e2eb6ca27096f9df7208")
+SHORTLINK_API_URL = os.environ.get("SHORTLINK_API_URL", "runurl.in")
+SHORTLINK_API_KEY = os.environ.get("SHORTLINK_API_KEY", "3a2c084d61d0813b05a00cd9ba564e92e39f92cb")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', "43200")) # Add time in seconds
 TUT_VID = os.environ.get("TUT_VID","https://t.me/Anime_Elixir/12")
 USE_PAYMENT = True if (os.environ.get("USE_PAYMENT", "TRUE") == "TRUE") & (USE_SHORTLINK) else False
