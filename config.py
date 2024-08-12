@@ -13,14 +13,14 @@ from logging.handlers import RotatingFileHandler
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002020304266")) #hanime
 FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "")) #
 
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6065880957:AAFKzCVrjNKpOZsyUOMRH-SV9uu5zpinY5g") #
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6737569405:AAF43zgb_InwPfgRpVTy_MpyN9sqtTtILsk") #
 APP_ID = int(os.environ.get("APP_ID", "25695562"))
 API_HASH = os.environ.get("API_HASH", "0b691c3e86603a7e34aae0b5927d725a")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001929558021"))
 OWNER_ID = int(os.environ.get("OWNER_ID", "1895952308"))
 
 PORT = os.environ.get("PORT", "8080")
-DB_URL = os.environ.get("DATABASE_URL", "mongodb+srv://deweyo5270minhluncom:deweyo5270minhluncom@cluster0.9ualtow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+DB_URL = os.environ.get("DATABASE_URL", "mongodb+srv://skiliggeeXporter:skiliggeeXporter@cluster0.tdxtakc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DATABASE_NAME", "AdultElixir")
 
 
