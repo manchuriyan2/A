@@ -183,7 +183,7 @@ async def not_joined(client: Client, message: Message):
         [
             InlineKeyboardButton("Join 1", url=f"https://t.me/+LDdjfyT53hdiYzE1"),
             InlineKeyboardButton("Join 2", url=client.invitelink),
-            InlineKeyboardButton("Join 3", url=client.invitelink2),
+            InlineKeyboardButton("Join 3", url=f"https://t.me/+LWJv7cjURvoyYWU1"),
             InlineKeyboardButton("Join 4", url=f"https://t.me/+R6xc_7a0yX4xYzVl")
         ]
     ]
